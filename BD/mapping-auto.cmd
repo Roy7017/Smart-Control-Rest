@@ -1,0 +1,1 @@
+sequelize-auto -o "./models" -d controle -h localhost -u root -p 3306 -x very_strong_password -e mysql
