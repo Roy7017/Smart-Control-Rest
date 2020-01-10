@@ -1,11 +1,10 @@
 /* jshint indent: 2 */
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   return sequelize.define('vehicule', {
     'id': {
       type: DataTypes.INTEGER(10).UNSIGNED,
       allowNull: false,
-      primaryKey: true,
       primaryKey: true,
       comment: "null",
       autoIncrement: true
@@ -17,7 +16,7 @@ module.exports = function(sequelize, DataTypes) {
     },
     'id_model': {
       type: DataTypes.INTEGER(10).UNSIGNED,
-      allowNull: false,
+      allowNull: true,
       comment: "null",
       references: {
         model: 'modele',
@@ -31,6 +30,6 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     tableName: 'vehicule',
-    timestamps:false
+    timestamps: false
   });
 };

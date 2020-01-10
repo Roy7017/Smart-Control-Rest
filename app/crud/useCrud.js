@@ -4,27 +4,28 @@ var express = require('express');
 
 var router = express.Router();
 
-router.post('/loginToken', (req, res) => {
-    db.controlleur.findAll(
+router.post('/controller/login', (req, res) => {
+    db.controlleur.findOne(
         {
             where: {
-                matricule: req.body.matricule
+                matricule: req.body.matricule,
+                password: req.body.password
             }
-        }).then((control) => {
+        }).then((controlleur) => {
             if (control) {
                 /**
                  * Modifier pour avoir le token
                  */
-                res.send({ token: req.token, user: control })
+                res.status(200).json(controlleur);
             } else {
-                res.send({ err: "Aucun user de ce matricule" })
+                res.status(400).send({ err: "Aucun user de ce matricule" });
             }
         }).catch((err) => {
             res.send({ err: err })
         })
 })
 
-router.get('/accueil', (req, res) => {
+router.get('/controller/accueil', (req, res) => {
     if (req.body.token === req.token) {
         db.controlleur.findAll()
             .then((control) => {
@@ -40,20 +41,7 @@ router.get('/accueil', (req, res) => {
 /**
  * Manque d'informations sur les postes
  */
-router.get('/control', (req, res) => {
 
-})
-
-router.post('/user/:id', (req, res) => {
-    db.controlleur.update({
-        $set: req.body
-    },
-        {
-            where: {
-                id: req.params.id
-            }
-        }).then((result) => res.json(result))
-})
 
 router.post('/user/:id/password', (req, res) => {
     db.controlleur.update({
@@ -67,17 +55,22 @@ router.post('/user/:id/password', (req, res) => {
         }).then((result) => res.json(result))
 })
 
-router.post('/user/:id/codeVerif', (req, res) => {
-    db.controlleur.update({
-        $set: req.body
-    },
-        {
-            where: {
-                id: req.params.id,
-                password: req.body.password
-            }
-        }).then((result) => res.json(result))
-        .catch((err)=> {
-            res.json({err: err})
-        })
+//Controler une vehicule
+router.post('/controller/controle/:mat', (req, res) => {
+    const array = [];
+    console.log('getting pieces');
+    db.vehicule.findOne({ where: { immat: req.body.matricule } }).then(vehicule => {
+        vehicule.getPieces().then(pieces => {
+            pieces.forEach(piece => {
+                if (Date.now() > Date.parse(piece.date_expir)) {
+                    array.push({ erreur: 'Date d\'expiration depasse', piece });
+                }
+            });
+            res.json(array);
+        });
+    });
+
+
 })
+
+module.exports = router;

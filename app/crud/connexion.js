@@ -27,12 +27,22 @@ const type_piece = require("../models/type_piece")(sequelize, DataTypes);
 const vehicule = require("../models/vehicule")(sequelize, DataTypes);
 
 
-modele.hasMany(vehicule);
-type_organisme.hasMany(organisme);
-type_piece.hasMany(piece);
-piece.belongsTo(vehicule);
-piece.belongsTo(organisme);
-controlleur.hasMany(piece_invalide);
+modele.hasMany(vehicule, { foreignKey: 'id_model' });
+vehicule.belongsTo(modele, { foreignKey: 'id_model' });
+
+type_organisme.hasMany(organisme, { foreignKey: 'id_type' });
+organisme.belongsTo(type_organisme, { foreignKey: 'id_type' });
+
+type_piece.hasMany(piece, { foreignKey: 'id_type' });
+piece.belongsTo(type_piece, { foreignKey: 'id_type' });
+
+vehicule.hasMany(piece, { foreignKey: 'id_vehicule' });
+piece.belongsTo(vehicule, { foreignKey: 'id_vehicule' });
+
+organisme.hasMany(piece, { foreignKey: 'id_provenance' });
+piece.belongsTo(organisme, { foreignKey: 'id_provenance' });
+
+controlleur.hasMany(piece_invalide, { foreignKey: 'id_controlleur' });
 
 sequelize
   .authenticate()

@@ -1,6 +1,6 @@
 /* jshint indent: 2 */
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   return sequelize.define('controlleur', {
     'id': {
       type: DataTypes.INTEGER(11),
@@ -10,10 +10,16 @@ module.exports = function(sequelize, DataTypes) {
       comment: "null",
       autoIncrement: true
     },
-    'matricule': {
+    'password': {
       type: DataTypes.STRING(40),
       allowNull: false,
       comment: "null"
+    },
+    'matricule': {
+      type: DataTypes.STRING(40),
+      allowNull: false,
+      comment: "null",
+      unique: true
     },
     'info_personne': {
       type: DataTypes.TEXT,
@@ -27,6 +33,6 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     tableName: 'controlleur',
-    timestamps:false
+    timestamps: false
   });
 };

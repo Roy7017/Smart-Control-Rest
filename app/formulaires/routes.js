@@ -60,7 +60,7 @@ function construct(table) {
 
 //structure d'un table
 //Parametres: table => table name
-router.get('/:table', (req, res) => {
+router.get('/tablename/:table', (req, res) => {
     let { table } = req.params;
     sequelize
         .query('SHOW Tables', {
@@ -82,7 +82,7 @@ router.get('/:table', (req, res) => {
 
 
 //structure d'un table
-router.get('/test/:table', (req, res) => {
+router.get('/tables/:table', (req, res) => {
     let { table } = req.params;
     sequelize
         .query('SHOW Tables', {
@@ -103,7 +103,7 @@ router.get('/test/:table', (req, res) => {
 })
 
 //structure of all tables
-router.get('/', (req, res) => {
+router.get('/tables', (req, res) => {
     const arr = []
     sequelize
         .query('SHOW Tables', {
